@@ -1,80 +1,86 @@
 var generateBtn = document.querySelector("#generate");
 
-var lowerCase = "abcdefghijklmnopqrstuvwxyz";
-var upperCase = lowerCase.toUpperCase();
-var numbers = "0123456789";
-var specialCharacters ="!@#$%^&*-_=+<>?[]{};:,.|~";
-
 var passwordlength = prompt("How Long Should the password be? choose from 6 to 100 characters");
 var useUpperCase = confirm("would you like to include uppercase letters?");
 var useNumbers = confirm("would you like to include numbers?");
 var useSpecialCharacters = confirm("would you like to include special characters?");
+var userLowerCase = true;
 
-var password = " ";
-
-var randomstring = Math.random().toString(36).slice(-passwordlength);
-
-var selectedCharacters = lowerCase;
+var password = "";
 
 
+parseInt(passwordlength);
 
-function characterSelector(){
+const randomize = {
+    lower: getRandomLower,
+    upper: getRandomUpper,
+    number: getRandomNumber,
+    special: getRandomSpecial
 
-  if (useUpperCase && useNumbers && useSpecialCharacters){
-    selectedCharacters += upperCase + numbers + specialCharacters;
-  
-  } else if (!useUpperCase && useNumbers && useSpecialCharacters) {
-    selectedCharacters += numbers +specialCharacters;
+};
 
-  } else if (!useUpperCase && !useNumbers && useSpecialCharacters){
 
-    selectedCharacters += specialCharacters;
-
-  }  else if (useUpperCase && useNumbers && !useSpecialCharacters){
-    selectedCharacters += upperCase + numbers;
-
-  } else if (useUpperCase && !useNumbers && !useSpecialCharacters){
-    selectedCharacters += upperCase;
-
-  }else if (!useUpperCase && useNumbers && !useSpecialCharacters){
-    selectedCharacters += numbers;
-
-  }else if (useUpperCase && !useNumbers && useSpecialCharacters){
-    selectedCharacters += upperCase + specialCharacters;
-
-  }
-
-  return selectedCharacters;
+function getRandomLower() {
+    password += String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+}
+function getRandomUpper() {
+    password += String.fromCharCode(Math.floor(Math.random() * 26) + 65);
+}
+function getRandomNumber() {
+    password += String.fromCharCode(Math.floor(Math.random() * 10) + 48);
+}
+function getRandomSpecial() {
+    const specialCharacters = "!@#$%^&*-_=+<>?[]{};:,.|~";
+    password += specialCharacters[Math.floor(Math.random() * specialCharacters.length)];
 }
 
 
-function generatePassword(length){
 
-  for(i = 0; i < length; i++){
-    password += selectedCharacters.charAt(Math.floor(Math.random() * selectedCharacters.length));
-  
-  }
-  return password;
-}
+function generatePassword() {
 
-  
+    randomize.lower();
 
-function writePassword() {
-  characterSelector();
-  generatePassword(passwordlength);
-  var passwordText = document.querySelector("#password");
+    if (useUpperCase) {
+        randomize.upper();
 
-  passwordText.value = password;
+    } if (useNumbers) {
+        randomize.number();
+
+    } if (useSpecialCharacters) {
+        randomize.special();
+
+    }
 
 }
 
 
-generateBtn.addEventListener("click", writePassword);
+
+function writePassword(length) {
+
+    for (i = 0; i < length; i++) {
+        generatePassword();
+    }
+
+    var passwordText = document.querySelector("#password");
+    passwordText.value = password.substr(0, length).split('').sort(function(){return 0.5-Math.random()}).join('');
+
+}
+
+
+generateBtn.addEventListener("click", writePassword(passwordlength));
 
 
 
 
-console.log(passwordlength);
-console.log(selectedCharacters);
-console.log(password);
-console.log(randomstring);
+
+
+
+
+
+
+
+
+
+
+
+
