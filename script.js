@@ -47,7 +47,7 @@ generateBtn.addEventListener("click",function(){
         password = "";
     
     } else {
-        alert("hey pal we said between 8 to 128 characters...  try again... ")
+        alert("hey pal I said between 8 to 128...  try again... ")
         return;
     }
 
